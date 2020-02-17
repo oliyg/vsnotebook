@@ -1,14 +1,10 @@
 import * as vscode from 'vscode';
 
+// NotebookTreeViewProvider
+import { NotebookTreeViewProvider } from './notebook-tree-view-provider/index';
+
 export function activate(context: vscode.ExtensionContext) {
-
-	console.log('Congratulations, your extension "vsnotebook" is now active!');
-
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', () => {
-		vscode.window.showInformationMessage('Hello World!');
-	});
-
-	context.subscriptions.push(disposable);
+	vscode.window.registerTreeDataProvider('notebook-view', new NotebookTreeViewProvider());
 }
 
 export function deactivate() {}

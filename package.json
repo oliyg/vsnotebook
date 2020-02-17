@@ -10,16 +10,25 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"onView:notebook-view"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [
-			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
-			}
-		]
+		"viewsContainers": {
+			"activitybar": [{
+				"id": "notebook-view-container",
+				"title": "Notebook View Container",
+				"icon": "assets/img/notebook-view-container.svg"
+			}]
+		},
+		"views": {
+			"notebook-view-container": [
+				{
+					"id": "notebook-view",
+					"name": "Notebook View"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",

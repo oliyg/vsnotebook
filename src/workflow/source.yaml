@@ -1,0 +1,11 @@
+name: wf1
+trigger: "*/5 * * * *"
+Tasks:
+  - task:
+      name: nb1
+      retry: 5
+      next: nb2
+  - task:
+      name: nb2
+      retry: 5
+      next: nb3

@@ -1,17 +1,15 @@
 import * as vscode from 'vscode';
-import { ContentsManager } from '@jupyterlab/services';
 
 // NotebookTreeViewProvider
 import { NotebookTreeViewProvider } from './notebook-tree-view-provider/index';
+import { WorkflowPanel } from './workflow/index';
 
 export function activate(context: vscode.ExtensionContext) {
+
+	// workspace notebook explorer
 	vscode.window.registerTreeDataProvider('notebook-view', new NotebookTreeViewProvider());
-
-	let contents = new ContentsManager();
-	contents.get('').then(model => {
-		console.log('files:', model.content);
-	}).catch(console.log);
-
+	// workflow panel
+	WorkflowPanel.createPanel(context.extensionPath);
 }
 
 export function deactivate() { }

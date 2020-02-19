@@ -59,6 +59,8 @@
   },
   "dependencies": {
     "@jupyterlab/services": "^4.2.0",
-    "axios": "^0.19.2"
+    "@types/yamljs": "^0.2.30",
+    "axios": "^0.19.2",
+    "yamljs": "^0.3.0"
   }
 }

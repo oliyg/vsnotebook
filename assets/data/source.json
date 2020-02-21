@@ -1,0 +1,1 @@
+{"name":"wf1","trigger":"*/5 * * * *","Tasks":[{"task":{"name":"nb1","retry":5,"next":{"success":"nb2","fail":"nb3"}}},{"task":{"name":"nb2","retry":5,"next":{"success":"nb3","fail":"nb3"}}},{"task":{"name":"nb3","retry":2,"next":{"success":"nb4","fail":null}}},{"task":{"name":"nb4","retry":4,"next":{"success":null,"fail":null}}}]}

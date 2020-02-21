@@ -10,11 +10,10 @@ export class WorkflowPanel {
     private readonly _extensionPath: string;
 
     public static createPanel(extensionPath: string) {
-        const column = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
         const panel = vscode.window.createWebviewPanel(
             'workflow',
             'Workflow',
-            column || vscode.ViewColumn.One,
+            vscode.ViewColumn.One,
             {
                 enableScripts: true,
                 retainContextWhenHidden: true

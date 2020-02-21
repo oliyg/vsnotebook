@@ -6,17 +6,5 @@
   </head>
   <body>
     <svg width="400" height="400" viewbox="-20 -20 440 440"></svg>
-    <script>
-      // todo
-      window.addEventListener("message", event => {
-        const message = event.data;
-        switch (message.type) {
-          case 0:
-            let data = message.data;
-            document.querySelector(".data").innerHTML = data.name;
-            break;
-        }
-      });
-    </script>
   </body>
 </html>

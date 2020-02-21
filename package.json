@@ -10,10 +10,18 @@
     "Other"
   ],
   "activationEvents": [
+    "onCommand:workflow.sendYaml",
     "onView:notebook-view"
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "commands": [
+      {
+        "title": "send yaml workflow config",
+        "command": "workflow.sendYaml",
+        "category": "Vsnotebook Workflow"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {

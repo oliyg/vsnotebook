@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   target: "web",
   entry: {
-    workflow: path.resolve(PATH_SRC, "workflow/webview/index.js")
+    workflow: path.resolve(PATH_SRC, "workflow/webview/home.tsx")
   },
   output: {
     path: PATH_OUT,
@@ -17,21 +17,17 @@ module.exports = {
   },
   devtool: "source-map",
   resolve: {
-    extensions: [".ts", ".js"]
+    extensions: [".ts", ".js", ".tsx", ".json"]
   },
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         use: [
           {
             loader: "ts-loader",
-            options: {
-              compilerOptions: {
-                module: "es6"
-              }
-            }
+            options: {}
           }
         ]
       },

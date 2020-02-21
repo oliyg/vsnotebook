@@ -11,17 +11,18 @@ Tasks:
       name: nb2
       retry: 5
       next:
-        success: nb3
-        fail: nb3
+        success: nb4
+        fail: 
   - task:
       name: nb3
       retry: 2
       next:
         success: nb4
-        fail:
+        fail: 
   - task:
       name: nb4
       retry: 4
       next:
         success:
         fail:
+  

@@ -1,54 +1,15 @@
+import { format } from "./utils";
 import * as d3_base from "d3";
 import * as d3_dag from "d3-dag";
-const vscode = acquireVsCodeApi();
 const d3 = Object.assign({}, d3_base, d3_dag);
 
-export function initPostMessage() {
-  console.log("TCL: initPostMessage -> initPostMessage");
-  window.addEventListener("message", event => {
-    const message = event.data;
-    switch (message.type) {
-      case "workflow.config.send":
-        try {
-          workflowChartHandler(message.data);
-        } catch (error) {
-          vscode.postMessage({
-            type: "workflow.d3.error",
-            data: error.message
-          });
-        }
-        break;
-    }
-  });
-}
-
-function format(dataList) {
-  let res = [];
-  dataList.forEach(task => {
-    let name = task.task.name;
-    let obj = { id: name, parentIds: [] };
-    dataList.forEach((item, index) => {
-      let success = item.task.next.success;
-      let fail = item.task.next.fail;
-      if (success === name && success !== dataList[index].task.name) {
-        obj.parentIds.push(dataList[index].task.name);
-      }
-      if (fail === name && fail !== dataList[index].task.name) {
-        obj.parentIds.push(dataList[index].task.name);
-      }
-    });
-    res.push(obj);
-  });
-  return res;
-}
-
-function workflowChartHandler(data) {
+export function workflowChartHandler(data) {
   const svgSelection = d3.select("svg");
   svgSelection.selectAll("*").remove();
   let exampleData = format(data.Tasks);
   // setup
-  let width = 400;
-  let height = 400;
+  let width = window.innerWidth - 100;
+  let height = window.innerHeight - 100;
   let render = d3.dagStratify();
   let dag = render(exampleData);
   let layout = d3
@@ -57,6 +18,7 @@ function workflowChartHandler(data) {
     .layering(d3.layeringLongestPath())
     .decross(d3.decrossTwoLayer())
     .coord(d3.coordCenter());
+
   // implement
   const defs = svgSelection.append("defs");
   layout(dag);
@@ -66,11 +28,13 @@ function workflowChartHandler(data) {
   dag.each((node, i) => {
     colorMap[node.id] = interp(i / steps);
   });
+
   const line = d3
     .line()
     .curve(d3.curveCatmullRom)
     .x(d => d.x)
     .y(d => d.y);
+
   svgSelection
     .append("g")
     .selectAll("path")
@@ -100,6 +64,7 @@ function workflowChartHandler(data) {
         .attr("stop-color", colorMap[target.id]);
       return `url(#${gradId})`;
     });
+
   const nodes = svgSelection
     .append("g")
     .selectAll("g")

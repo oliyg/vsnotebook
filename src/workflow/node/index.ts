@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
+import * as path from 'path';
 
 export class WorkflowPanel {
     public static currentPanel: WorkflowPanel | undefined;
@@ -59,7 +60,13 @@ export class WorkflowPanel {
     }
 
     private _getWorkflowWebview(): string {
-        let file = readFileSync(resolve(this._extensionPath, 'src/workflow/index.html'));
-        return file.toString();
+        let resPath = path.join(resolve(this._extensionPath, 'out/workflow/index.html'));
+        let dirPath = path.dirname(resPath);
+        let file: string = readFileSync(resPath).toString();
+
+        file = file.replace(/(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g, (m, $1, $2) => {
+            return $1 + vscode.Uri.file(path.resolve(dirPath, $2)).with({ scheme: 'vscode-resource' }).toString() + '"';
+        });
+        return file;
     }
 }

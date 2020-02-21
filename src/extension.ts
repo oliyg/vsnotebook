@@ -2,11 +2,11 @@ import * as vscode from 'vscode';
 
 // NotebookTreeViewProvider
 import { NotebookTreeViewProvider } from './notebook-tree-view-provider/index';
-import { WorkflowPanel } from './workflow/index';
+import { WorkflowPanel } from './workflow/node/index';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import * as YAML from 'yamljs';
-import { PostMessage } from './workflow/consts';
+import { PostMessage } from './workflow/node/consts';
 
 export function activate(context: vscode.ExtensionContext) {
 

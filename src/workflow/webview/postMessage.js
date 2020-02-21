@@ -1,5 +1,6 @@
 import * as d3_base from "d3";
 import * as d3_dag from "d3-dag";
+const vscode = acquireVsCodeApi();
 const d3 = Object.assign({}, d3_base, d3_dag);
 
 export function initPostMessage() {
@@ -7,8 +8,15 @@ export function initPostMessage() {
   window.addEventListener("message", event => {
     const message = event.data;
     switch (message.type) {
-      case 0:
-        workflowChartHandler(message.data);
+      case "workflow.config.send":
+        try {
+          workflowChartHandler(message.data);
+        } catch (error) {
+          vscode.postMessage({
+            type: "workflow.d3.error",
+            data: error.message
+          });
+        }
         break;
     }
   });

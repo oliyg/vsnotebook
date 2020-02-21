@@ -29,26 +29,24 @@ export class WorkflowPanel {
 
         this._initHtml();
 
-        // this._panel.webview.onDidReceiveMessage(msg => {
-        //     this._onDidReceiveMessage(msg);
-        // }, null, undefined);
+        this._panel.webview.onDidReceiveMessage(msg => {
+            this._onDidReceiveMessage(msg);
+        }, null, undefined);
     }
 
     // handle postMessage
-    // private _onDidReceiveMessage(msg: { type: string, data: any }): void {
-    //     switch (msg.type) {
-    //         case 'workflow-yaml':
-    //             console.log("TCL: WorkflowPanel -> workflow-yaml", msg.data);
-    //             vscode.window.showInformationMessage('get workflow yaml');
-    //             // todo
-    //             return;
-    //     }
-    // }
+    private _onDidReceiveMessage(msg: { type: string, data: any }): void {
+        switch (msg.type) {
+            case 'workflow.d3.error':
+                vscode.window.showErrorMessage(msg.data);
+                return;
+        }
+    }
 
     /**
      * send a serialized data message to webview
      */
-    public postMessage(msg: { type: number, data: any }) {
+    public postMessage(msg: { type: string, data: any }) {
         this._panel.webview.postMessage(msg);
     }
 

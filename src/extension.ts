@@ -6,7 +6,6 @@ import { WorkflowPanel } from './workflow/node/index';
 import { readFileSync, watchFile, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import * as YAML from 'yamljs';
-import { PostMessage } from './workflow/node/consts';
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -26,10 +25,15 @@ export function deactivate() { }
 
 function sendYamlData(context: vscode.ExtensionContext) {
 	if (WorkflowPanel.currentPanel) {
-		let workflowJSON = YAML.parse(readFileSync(resolve(context.extensionPath, 'assets/data/source.yaml')).toString());
+		let workflowJSON;
+		try {
+			workflowJSON = YAML.parse(readFileSync(resolve(context.extensionPath, 'assets/data/source.yaml')).toString());
+		} catch (error) {
+			vscode.window.showErrorMessage(error.message);
+		}
 		console.log("TCL: sendYamlData -> workflowJSON", workflowJSON);
 		writeFileSync(resolve(context.extensionPath, 'assets/data/source.json'), JSON.stringify(workflowJSON));
-		WorkflowPanel.currentPanel?.postMessage({ type: PostMessage.WorkflowYaml, data: workflowJSON });
+		WorkflowPanel.currentPanel?.postMessage({ type: 'workflow.config.send', data: workflowJSON });
 	} else {
 		WorkflowPanel.createPanel(context.extensionPath);
 	}

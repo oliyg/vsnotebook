@@ -6,7 +6,7 @@ import webpack from "webpack";
 const config: webpack.Configuration = {
   target: "web",
   entry: {
-    workflow: path.resolve(PATH_SRC, "workflow/webview/home.tsx")
+    workflow: path.resolve(PATH_SRC, "workflow/webview/index.tsx")
   },
   output: {
     path: PATH_OUT,

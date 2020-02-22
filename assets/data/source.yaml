@@ -12,17 +12,46 @@ Tasks:
       retry: 5
       next:
         success: nb4
-        fail: 
+        fail:
   - task:
       name: nb3
       retry: 2
       next:
         success: nb4
-        fail: 
+        fail: nb5
   - task:
       name: nb4
-      retry: 4
+      retry: 2
+      next:
+        success: nb6
+        fail: nb7
+  - task:
+      name: nb5
+      retry: 2
       next:
         success:
-        fail:
-  
+        fail: 
+  - task:
+      name: nb6
+      retry: 2
+      next:
+        success:
+        fail: 
+  - task:
+      name: nb7
+      retry: 2
+      next:
+        success: nb8
+        fail: nb9
+  - task:
+      name: nb8
+      retry: 2
+      next:
+        success:
+        fail: 
+  - task:
+      name: nb9
+      retry: 2
+      next:
+        success:
+        fail: 

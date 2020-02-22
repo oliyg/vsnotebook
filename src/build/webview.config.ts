@@ -1,8 +1,9 @@
-const path = require("path");
-const { PATH_OUT, PATH_SRC } = require("./consts");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+import path from "path";
+import { PATH_OUT, PATH_SRC } from "./consts";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import webpack from "webpack";
 
-module.exports = {
+const config: webpack.Configuration = {
   target: "web",
   entry: {
     workflow: path.resolve(PATH_SRC, "workflow/webview/home.tsx")
@@ -12,6 +13,8 @@ module.exports = {
     filename(chunkData) {
       if (chunkData.chunk.name === "workflow") {
         return "[name]/[name].js";
+      } else {
+        return 'workflow.js';
       }
     }
   },
@@ -50,3 +53,5 @@ module.exports = {
     })
   ]
 };
+
+export default config;

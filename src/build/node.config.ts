@@ -1,7 +1,8 @@
-const path = require("path");
-const { PATH_OUT, PATH_SRC } = require("./consts");
+import path from "path";
+import * as webpack from 'webpack';
+import { PATH_OUT, PATH_SRC } from "./consts";
 
-module.exports = {
+const config: webpack.Configuration = {
   target: "node",
   entry: {
     extension: path.resolve(PATH_SRC, "extension.ts")
@@ -11,6 +12,8 @@ module.exports = {
     filename(chunkData) {
       if (chunkData.chunk.name === "extension") {
         return "[name].js";
+      } else {
+        return "extension.js";
       }
     },
     libraryTarget: "commonjs2"
@@ -43,3 +46,5 @@ module.exports = {
     ]
   }
 };
+
+export default config;

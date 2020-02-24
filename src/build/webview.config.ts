@@ -25,6 +25,19 @@ const config: webpack.Configuration = {
   module: {
     rules: [
       {
+        test: /\.css$/i,
+        exclude: /node_modules/,
+        use: [{
+          loader: 'style-loader',
+          options: {}
+        }, {
+          loader: 'css-loader',
+          options: {
+            sourceMap: true
+          }
+        }],
+      },
+      {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         use: [

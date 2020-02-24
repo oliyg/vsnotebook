@@ -1,6 +1,9 @@
 import { format } from "./utils";
 import * as d3_base from "d3";
 import * as d3_dag from "d3-dag";
+import * as d3_tip_module from "d3-tip";
+const d3_tip = d3_tip_module.default;
+
 const d3 = Object.assign({}, d3_base, d3_dag);
 
 export class WorkflowChart {
@@ -59,6 +62,19 @@ export class WorkflowChart {
       data: this.data
     });
   }
+  _initTooltip() {
+    this.nodeTip = d3_tip()
+      .attr("class", "d3-tip")
+      .html(function(node) {
+        return `<div>
+        <p>Name: <span class="d3-tip-default">${node.data.id}</span></p>
+        <p>ParentIds: <span class="d3-tip-default">${node.data.parentIds.join(
+          ", "
+        )}</span></p>
+        </div>`;
+      });
+    this.body.call(this.nodeTip);
+  }
   drawPath() {
     // path
     this.selectionLinks = this.body
@@ -111,6 +127,8 @@ export class WorkflowChart {
           .transition()
           .duration(200)
           .attr("r", 25);
+        // that.nodeTip.direction("s");
+        that.nodeTip.show.apply(this, arguments);
       })
       .on("mouseout", function() {
         d3.select(this)
@@ -118,6 +136,8 @@ export class WorkflowChart {
           .transition()
           .duration(200)
           .attr("r", 20);
+
+        that.nodeTip.hide.apply(this, arguments);
       })
       .on("dblclick", this.onDblClickNode.bind(null, that)());
     this.selectionNodeCircles = this.selectionNodeGroups
@@ -144,6 +164,7 @@ export class WorkflowChart {
     this.defs = this.body.append("defs");
     this.drawPath();
     this.drawNode();
+    this._initTooltip();
     this._saveData();
   }
 
@@ -160,10 +181,12 @@ export class WorkflowChart {
 
     this.drawPath();
     this.drawNode();
+    this._initTooltip();
   }
 
   onDblClickNode(that) {
     return function(node, index, arr) {
+      that.nodeTip.hide.apply(this, arguments);
       let targetId = d3
         .select(this)
         .remove()

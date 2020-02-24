@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
-import { readFileSync } from 'fs';
+import { readFileSync, fstat, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import * as path from 'path';
+import * as YAML from 'yamljs';
 
 export class WorkflowPanel {
     public static currentPanel: WorkflowPanel | undefined;
@@ -37,6 +38,15 @@ export class WorkflowPanel {
     // handle postMessage
     private _onDidReceiveMessage(msg: { type: string, data: any }): void {
         switch (msg.type) {
+            case 'workflow.d3.save':
+                console.log("TCL: WorkflowPanel -> workflow.d3.save", msg.data);
+                let WorkflowYAML = YAML.stringify(msg.data);
+                try {
+                    writeFileSync(resolve(this._extensionPath, 'assets/data/source.yaml'), WorkflowYAML);
+                } catch (error) {
+                    vscode.window.showErrorMessage('Write file error');
+                }
+                return;
             case 'workflow.d3.error':
                 vscode.window.showErrorMessage(msg.data);
                 return;

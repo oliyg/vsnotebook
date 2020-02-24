@@ -21,9 +21,9 @@ export class WorkflowChart {
   }
   _initData(data) {
     // data source
-    this.JSONData = format(data.Tasks);
+    this.data = data;
+    this.JSONData = format(this.data.Tasks);
     this.root = d3.dagStratify()(this.JSONData);
-    console.log("TCL: WorkflowChart -> init -> this.root", this.root);
   }
   _getLayout() {
     // layout
@@ -51,6 +51,13 @@ export class WorkflowChart {
       .curve(d3.curveCatmullRom)
       .x(d => d.x)
       .y(d => d.y);
+  }
+  _saveData() {
+    console.log("TCL: WorkflowChart -> _saveData -> _saveData", this.data);
+    vscode.postMessage({
+      type: "workflow.d3.save",
+      data: this.data
+    });
   }
   drawPath() {
     // path
@@ -112,7 +119,7 @@ export class WorkflowChart {
           .duration(200)
           .attr("r", 20);
       })
-      .on("click", this.onClickNode.bind(null, that)());
+      .on("dblclick", this.onDblClickNode.bind(null, that)());
     this.selectionNodeCircles = this.selectionNodeGroups
       .append("circle")
       .transition()
@@ -130,6 +137,15 @@ export class WorkflowChart {
       .duration(200)
       .attr("fill", "white");
   }
+  reDrawNode() {
+    this._removeALl();
+    this._initData(this.data);
+    this._getLayout();
+    this.defs = this.body.append("defs");
+    this.drawPath();
+    this.drawNode();
+    this._saveData();
+  }
 
   init(data) {
     this._removeALl();
@@ -144,23 +160,22 @@ export class WorkflowChart {
 
     this.drawPath();
     this.drawNode();
-
-    // setTimeout(() => {
-    //   this._removeALl();
-    //   this._initData(data);
-    //   this._getLayout();
-    //   this.defs = this.body.append("defs");
-    //   this.drawPath();
-    //   this.drawNode();
-    // }, 2000);
   }
 
-  onClickNode(that) {
+  onDblClickNode(that) {
     return function(node, index, arr) {
-      that.selectionNodeGroups.exit().remove();
-      let nodes = that.selectionNodeGroups.data();
-      nodes.splice(index, i);
-      console.log("TCL: onClickNode -> nodes", that.selectionNodeGroups.data());
+      let targetId = d3
+        .select(this)
+        .remove()
+        .data()[0].id;
+      that.data.Tasks = that.data.Tasks.filter(item => {
+        let success = item.task.next.success;
+        let fail = item.task.next.fail;
+        success === targetId && (success = null);
+        fail === targetId && (fail = null);
+        return item.task.name !== targetId;
+      });
+      that.reDrawNode();
     };
   }
 }

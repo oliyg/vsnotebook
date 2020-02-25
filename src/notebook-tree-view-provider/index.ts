@@ -4,6 +4,11 @@ import { extname } from 'path';
 export class NotebookTreeViewProvider implements vscode.TreeDataProvider<TreeItem> {
   private _onDidChangeTreeData: vscode.EventEmitter<TreeItem | undefined> = new vscode.EventEmitter<TreeItem | undefined>();
   readonly onDidChangeTreeData: vscode.Event<TreeItem | undefined> = this._onDidChangeTreeData.event;
+  private _context: vscode.ExtensionContext;
+
+  constructor(context: vscode.ExtensionContext) {
+    this._context = context;
+  }
 
   refresh(): void {
     this._onDidChangeTreeData.fire();
@@ -39,5 +44,11 @@ class TreeItem extends vscode.TreeItem {
 
   isNotebook(filePath: string): boolean {
     return extname(filePath) === '.ipynb';
+  }
+}
+
+export class NotebookTreeView {
+  constructor(context: vscode.ExtensionContext) {
+    vscode.window.registerTreeDataProvider('notebook-view', new NotebookTreeViewProvider(context));
   }
 }

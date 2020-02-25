@@ -1,9 +1,8 @@
 Tasks:
     - {task: {name: nb1, next: {fail: nb3, success: nb2}, retry: 5}}
     - {task: {name: nb2, next: {fail: null, success: nb4}, retry: 5}}
-    - {task: {name: nb3, next: {fail: nb5, success: nb4}, retry: 2}}
     - {task: {name: nb4, next: {fail: nb7, success: nb6}, retry: 2}}
-    - {task: {name: nb5, next: {fail: null, success: null}, retry: 2}}
     - {task: {name: nb6, next: {fail: null, success: null}, retry: 2}}
+    - {task: {name: nb7, next: {fail: nb9, success: nb8}, retry: 2}}
 name: wf1
 trigger: '*/5 * * * *'

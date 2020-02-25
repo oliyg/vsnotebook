@@ -3,7 +3,7 @@ import YAML from 'yamljs';
 import * as fs from 'fs';
 import * as path from 'path';
 
-interface Entry {
+export interface Entry {
   uri: vscode.Uri
   type: vscode.FileType
 }
@@ -76,7 +76,7 @@ export class WorkflowTreeViewProvider implements vscode.TreeDataProvider<Entry> 
     if (element.type === vscode.FileType.File) {
       // todo
       // treeItem.command = { command: '', title: "Open workflow", arguments: [element.uri], };
-      // treeItem.contextValue = 'file';
+      treeItem.contextValue = 'file';
     }
     return treeItem;
   }

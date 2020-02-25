@@ -19,9 +19,22 @@
       {
         "title": "send yaml workflow config",
         "command": "workflow.sendYaml",
-        "category": "Vsnotebook Workflow"
+        "category": "Vsnotebook Workflow",
+        "icon": {
+          "dark": "assets/img/notebook-view-container.svg",
+          "light": "assets/img/notebook-view-container.svg"
+        }
       }
     ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "workflow.sendYaml",
+          "group": "inline",
+          "when": "view == workflow-view && viewItem == file"
+        }
+      ]
+    },
     "viewsContainers": {
       "activitybar": [
         {

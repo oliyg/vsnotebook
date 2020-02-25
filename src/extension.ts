@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 // NotebookTreeViewProvider
 import { NotebookTreeViewProvider } from './notebook-tree-view-provider/index';
+import { WorkflowTreeViewProvider } from './workflow-tree-view-provider/index';
 import { WorkflowPanel } from './workflow/node/index';
 import { readFileSync, watchFile, writeFileSync } from 'fs';
 import { resolve } from 'path';
@@ -11,6 +12,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// workspace notebook explorer
 	vscode.window.registerTreeDataProvider('notebook-view', new NotebookTreeViewProvider());
+	// workspace workflow tasks explorer
+	const workflowTreeViewProvider = new WorkflowTreeViewProvider(context);
+	vscode.window.registerTreeDataProvider('workflow-view', workflowTreeViewProvider);
+	// read example yaml file data source
+	// workflowTreeViewProvider.readFile('assets/data/source.yaml');
+
 	// workflow panel
 	WorkflowPanel.createPanel(context.extensionPath);
 	// commands

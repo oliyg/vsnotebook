@@ -11,7 +11,7 @@
   ],
   "activationEvents": [
     "onCommand:workflow.sendYaml",
-    "onView:notebook-view"
+    "onView:workflow-view"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -36,6 +36,10 @@
         {
           "id": "notebook-view",
           "name": "Notebook View"
+        },
+        {
+          "id": "workflow-view",
+          "name": "Workflow View"
         }
       ]
     }
